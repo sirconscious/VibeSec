@@ -1,0 +1,90 @@
+$content discovery --> There are three main ways of discovering content on a website which we'll cover. Manually, Automated and OSINT (Open-Source Intelligence). 
+ 			1)the robot.txt file is a document that tells the search engine which pages to hide 
+ 			2)favicon is the icon used by most frameworks hackers can use it to determin wich framework you are using using the md5 hashcode  
+ 			https://wiki.owasp.org/index.php/OWASP_favicon_database is a database where you can use the hash code to view wich database the hacker is using
+ 			3)Sitemap.xml
+	                 Unlike the robots.txt file, which restricts what search engine crawlers can look at, the sitemap.xml 
+	                 file gives a list of every file the website owner wishes to be listed on a search engine. 
+	                 These can sometimes contain areas of the website that are a bit more difficult 
+	                 to navigate to or even list some old webpages that the current site no longer 
+	                 uses but are still working behind the scenes. 
+	                4)http headers When we make requests to the web server, the server returns various HTTP headers. 
+	                These headers can sometimes contain useful information such as the webserver software and possibly
+	                 the programming/scripting language in use. In the below example, we can see the webserver is NGINX version 
+	                 1.18.0 and runs PHP version 7.4.3. Using this information, we could find vulnerable versions of software being used. 
+	                 Try running the below curl command against the web server, where the -v switch enables verbose mode, 
+	                 which will output the headers (there might be something interesting 
+	                5) once the framwork is identfied reading the documntation is a good idea to check for default credentials hidden paths isues ect ... 
+	                6)OSINT means Open-Source Intelligence.
+			It refers to collecting and analyzing information that is publicly available from open sources.
+	                7)Google Hacking / Dorking can be very effictive to find  
+	                8)site:emsi.ma admin 
+	                9)the Wappalyzer (https://www.wappalyzer.com/) is an online tool and browser extension that helps
+	                 identify what technologies a website uses, such as frameworks, Content Management Systems (CMS),
+	                  payment processors and much more, and it can even find version numbers as well.
+	               10)The Wayback Machine (https://archive.org/web/) is a historical archive of websites that 
+	               dates back to the late 90s. You can search a domain name, and it will show you all
+	                the times the service scraped the web page and saved the contents. 
+	                This service can help uncover old pages that may still be active on the current website.
+	               11)S3 Buckets are a storage service provided by Amazon AWS, 
+	               allowing people to save files and even static website content in the cloud 		accessible over HTTP and HTTPS. 
+	               The owner of the files can set access permissions to either make files public, private and even writable.
+	                Sometimes these access permissions are incorrectly set and inadvertently allow access to files that shouldn't be available to the public.
+	                 The format of the S3 buckets is http(s)://{name}.s3.amazonaws.com where {name} is decided by the owner,
+	                  such as tryhackme-assets.s3.amazonaws.com.
+	                   S3 buckets can be discovered in many ways, such as finding the URLs in the website's page source,
+	                    GitHub repositories,
+	                  or even automating the process. One common automation method is by using the company name
+	                   followed by common terms such as {name}-assets, {name}-www, {name}-public, {name}-private, etc. 
+	                12)Automation Tools 
+	                	fuzzing
+					user@machine$ ffuf -w /usr/share/wordlists/SecLists/Discovery/Web-Content/common.txt -u http://10.66.169.198/FUZZ
+					dirb can be used but its much slower and older 
+				1. Directory Enumeration (Basic) 
+					gobuster dir -u http://example.com -w /path/to/wordlist.txt 
+				2. Specify File Extensions 
+					gobuster dir -u http://example.com -w /path/to/wordlist.txt -x php,html,txt
+				3. DNS Subdomain Enumeration 
+					gobuster dns -d example.com -w /path/to/subdomains.txt 
+				4. Virtual Host Discovery
+
+    This command enumerates virtual hosts on a target server. It reveals multiple websites or applications hosted on the same IP address or server infrastructure.
+
+gobuster vhost -u http://example.com -w /path/to/vhosts.txt 
+Bruteforce DNS (Domain Name System) enumeration is the method of trying tens, hundreds, thousands or even millions of different possible subdomains from a pre-defined list of commonly used subdomains. Because this method requires many requests, we automate it with tools to make the process quicker. In this instance, we are using a tool called dnsrecon to perform this. Click the "View Site" button to open the static site, press the "Run DNSrecon Request" button to start the simulation, and then answer the question below. 
+
+
+
+
+fuzzing approach: 
+1. Directory Enumeration (Basic) 
+gobuster dir -u https://emsi.ma -w ./wordlists/common.txt  -o results.txt
+2. DNS Subdomain Enumeration
+gobuster dns --domain emsi.ma -w ./wordlists/subdomains-top1million-5000.txt  -o results.txt 
+3. Virtual Host Discovery 
+gobuster vhost -u http://example.com -w /path/to/vhosts.txt  
+
+
+
+
+### DNS Server Discovery
+
+Identifying the DNS servers associated with a target domain is a critical first step. Tools like dig and nslookup can be employed to find nameservers:	       
+# Using dig
+dig NS <target-domain>
+
+# Using nslookup
+nslookup -type=NS <target-domain> 
+
+Using host
+
+A tool used to perform DNS queries and determine IP addresses. 
+# Perform DNS query
+host hackviser.com
+
+# Query specific type of DNS records (e.g., MX record)
+host -t MX hackviser.com
+
+# Perform a reverse DNS lookup
+host <IP_ADDRESS> 
+
