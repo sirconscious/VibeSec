@@ -2,3 +2,5 @@ langchain
 langchain-ollama
 langchain-chroma
 pandas
+
+pip install langchain-ollama langchain-chroma langchain-core langchain-community langchain pandas chromadb --break-system-packages
